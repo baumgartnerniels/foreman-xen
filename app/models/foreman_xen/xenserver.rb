@@ -53,7 +53,7 @@ module ForemanXen
     end
 
     def find_vm_by_uuid(uuid)
-      client.servers.find_by(uuid: uuid)
+      client.servers.find_by_uuid(uuid)
     rescue Fog::XenServer::RequestFailed => e
       Foreman::Logging.exception("Failed retrieving xenserver vm by uuid #{uuid}", e)
       raise(ActiveRecord::RecordNotFound) if e.message.include?('HANDLE_INVALID')
@@ -530,7 +530,7 @@ module ForemanXen
       if hypervisor.empty?
         vm.set_attribute('affinity', '')
       else
-        vm.set_attribute('affinity', client.hosts.find_by(uuid: hypervisor))
+        vm.set_attribute('affinity', client.hosts.find_by_uuid(hypervisor))
       end
     end
 
